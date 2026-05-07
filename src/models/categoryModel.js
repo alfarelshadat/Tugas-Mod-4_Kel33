@@ -35,5 +35,18 @@ export const CategoryModel = {
     await pool.query(query, [name, id]);
 
   return result.rows[0];
-  }
+  },
+
+  async delete(id) {
+
+  await pool.query(
+    'DELETE FROM categories WHERE id = $1',
+    [id]
+  );
+
+  return {
+    message: 'Category berhasil dihapus'
+  };
+
+}
 };
