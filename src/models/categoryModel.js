@@ -20,5 +20,20 @@ export const CategoryModel = {
     const query = 'INSERT INTO categories (name) VALUES ($1) RETURNING *';
     const result = await pool.query(query, [name]);
     return result.rows[0];
+  },
+
+  async update(id, name) {
+
+  const query = `
+    UPDATE categories
+    SET name = $1
+    WHERE id = $2
+    RETURNING *
+  `;
+
+  const result =
+    await pool.query(query, [name, id]);
+
+  return result.rows[0];
   }
 };
