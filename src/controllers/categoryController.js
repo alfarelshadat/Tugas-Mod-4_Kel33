@@ -18,6 +18,30 @@ export const CategoryController = {
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
+  },
+
+  async updateCategory(req, res) {
+
+  try {
+
+    const { name } = req.body;
+
+    const category =
+      await CategoryModel.update(
+        req.params.id,
+        name
+      );
+
+    res.json(category);
+
+  } catch (err) {
+
+    res.status(400).json({
+      error: err.message
+    });
+
   }
+
+ }
 };
 
