@@ -30,6 +30,61 @@ export const LoanController = {
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
+  },
+
+  async updateLoan(req, res) {
+
+  try {
+
+    const {
+      member_id,
+      book_id,
+      borrow_date,
+      return_date,
+      status
+    } = req.body;
+
+    const loan =
+      await LoanModel.update(
+        req.params.id,
+        member_id,
+        book_id,
+        borrow_date,
+        return_date,
+        status
+      );
+
+    res.json(loan);
+
+  } catch (err) {
+
+    res.status(400).json({
+      error: err.message
+    });
+
   }
+
+},
+
+async deleteLoan(req, res) {
+
+  try {
+
+    const result =
+      await LoanModel.delete(
+        req.params.id
+      );
+
+    res.json(result);
+
+  } catch (err) {
+
+    res.status(400).json({
+      error: err.message
+    });
+
+  }
+
+}
 };
 
