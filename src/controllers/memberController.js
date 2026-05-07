@@ -22,7 +22,56 @@ export const MemberController = {
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
+  },
+
+  async updateMember(req, res) {
+
+  try {
+
+    const {
+      name,
+      email
+    } = req.body;
+
+    const member =
+      await MemberModel.update(
+        req.params.id,
+        name,
+        email
+      );
+
+    res.json(member);
+
+  } catch (err) {
+
+    res.status(400).json({
+      error: err.message
+    });
+
   }
+
+},
+
+async deleteMember(req, res) {
+
+  try {
+
+    const result =
+      await MemberModel.delete(
+        req.params.id
+      );
+
+    res.json(result);
+
+  } catch (err) {
+
+    res.status(400).json({
+      error: err.message
+    });
+
+  }
+
+}
 };
 
 
