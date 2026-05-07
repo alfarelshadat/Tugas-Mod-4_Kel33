@@ -30,21 +30,60 @@ export const BookController = {
   },
 
   async updateBook(req, res) {
-    try {
-      const updated = await BookModel.update(req.params.id, req.body);
-      res.json(updated);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  },
 
-  async deleteBook(req, res) {
-    try {
-      const result = await BookModel.delete(req.params.id);
-      res.json(result);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
+  try {
+
+    const {
+      isbn,
+      title,
+      author_id,
+      category_id,
+      total_copies,
+      available_copies
+    } = req.body;
+
+    const book =
+      await BookModel.update(
+        req.params.id,
+        isbn,
+        title,
+        author_id,
+        category_id,
+        total_copies,
+        available_copies
+      );
+
+    res.json(book);
+
+  } catch (err) {
+
+    res.status(400).json({
+      error: err.message
+    });
+
   }
+
+},
+
+async deleteBook(req, res) {
+
+  try {
+
+    const result =
+      await BookModel.delete(
+        req.params.id
+      );
+
+    res.json(result);
+
+  } catch (err) {
+
+    res.status(400).json({
+      error: err.message
+    });
+
+  }
+
+}
 };
 
