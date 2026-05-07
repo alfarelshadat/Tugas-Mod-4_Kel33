@@ -4,8 +4,7 @@ export const LoanModel = {
   async createLoan(book_id, member_id, due_date) {
     const query = `
       INSERT INTO loans (book_id, member_id, loan_date, due_date, status)
-      VALUES ($1, $2, NOW(), $3, 'active')
-      RETURNING *
+      VALUES ($1, $2, NOW(), $3, 'BORROWED')
     `;
     const result = await pool.query(query, [book_id, member_id, due_date]);
     return result.rows[0];
@@ -26,7 +25,7 @@ export const LoanModel = {
   async returnBook(loan_id) {
     const query = `
       UPDATE loans
-      SET status = 'returned', return_date = NOW()
+      SET status = 'RETURNED', return_date = NOW()
       WHERE id = $1
       RETURNING *
     `;
