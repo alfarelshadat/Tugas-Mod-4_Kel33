@@ -42,24 +42,57 @@ export const BookModel = {
   },
 
   // UPDATE
-  async update(id, data) {
-    const { isbn, title, author_id, category_id, total_copies } = data;
+  async update(
+  id,
+  isbn,
+  title,
+  author_id,
+  category_id,
+  total_copies,
+  available_copies
+) {
 
-    const query = `
-      UPDATE books
-      SET isbn=$1, title=$2, author_id=$3, category_id=$4, total_copies=$5
-      WHERE id=$6
-      RETURNING *
-    `;
-    const result = await pool.query(query, [isbn, title, author_id, category_id, total_copies, id]);
-    return result.rows[0];
-  },
+  const query = `
+    UPDATE books
+    SET
+      isbn = $1,
+      title = $2,
+      author_id = $3,
+      category_id = $4,
+      total_copies = $5,
+      available_copies = $6
+    WHERE id = $7
+    RETURNING *
+  `;
 
-  // DELETE
-  async delete(id) {
-    const query = 'DELETE FROM books WHERE id = $1';
-    await pool.query(query, [id]);
-    return { message: "Buku berhasil dihapus dari sistem." };
-  }
+  const values = [
+    isbn,
+    title,
+    author_id,
+    category_id,
+    total_copies,
+    available_copies,
+    id
+  ];
+
+  const result =
+    await pool.query(query, values);
+
+  return result.rows[0];
+
+},
+
+async delete(id) {
+
+  await pool.query(
+    'DELETE FROM books WHERE id = $1',
+    [id]
+  );
+
+  return {
+    message: 'Book berhasil dihapus'
+  };
+
+}
 };
 
