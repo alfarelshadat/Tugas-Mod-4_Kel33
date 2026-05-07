@@ -32,5 +32,55 @@ export const LoanModel = {
     `;
     const result = await pool.query(query, [loan_id]);
     return result.rows[0];
-  }
+  },
+
+  async update(
+  id,
+  member_id,
+  book_id,
+  borrow_date,
+  return_date,
+  status
+) {
+
+  const query = `
+    UPDATE loans
+    SET
+      member_id = $1,
+      book_id = $2,
+      borrow_date = $3,
+      return_date = $4,
+      status = $5
+    WHERE id = $6
+    RETURNING *
+  `;
+
+  const values = [
+    member_id,
+    book_id,
+    borrow_date,
+    return_date,
+    status,
+    id
+  ];
+
+  const result =
+    await pool.query(query, values);
+
+  return result.rows[0];
+
+},
+
+async delete(id) {
+
+  await pool.query(
+    'DELETE FROM loans WHERE id = $1',
+    [id]
+  );
+
+  return {
+    message: 'Loan berhasil dihapus'
+  };
+
+}
 };
