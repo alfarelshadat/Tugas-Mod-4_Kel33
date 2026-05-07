@@ -14,5 +14,39 @@ export const MemberModel = {
     `;
     const result = await pool.query(query, [full_name, email, member_type]);
     return result.rows[0];
-  }
+  },
+
+  async update(id, name, email) {
+
+  const query = `
+    UPDATE members
+    SET
+      name = $1,
+      email = $2
+    WHERE id = $3
+    RETURNING *
+  `;
+
+  const result =
+    await pool.query(
+      query,
+      [name, email, id]
+    );
+
+  return result.rows[0];
+
+},
+
+async delete(id) {
+
+  await pool.query(
+    'DELETE FROM members WHERE id = $1',
+    [id]
+  );
+
+  return {
+    message: 'Member berhasil dihapus'
+  };
+
+}
 };
